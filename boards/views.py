@@ -10,7 +10,7 @@ from .models import Board, Post
 from .serializers import BoardSerializer, PostSerializer, UserSerializer
 from rest_framework.permissions import AllowAny 
 from django.db.models.functions import Length
-
+from .filters import PostFilter 
 
 class BoardViewSet(viewsets.ModelViewSet):
     """
@@ -35,7 +35,7 @@ class PostViewSet(viewsets.ModelViewSet):
     
     # 配置过滤和搜索
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['board',]                    # 精确筛选：?board=1
+    filterset_class = PostFilter                   # 精确筛选：?board=1
     search_fields = ['title', 'content']            # 模糊搜索：?search=关键词
     ordering_fields = ['created_at', 'views', 'content_len']  # 排序：?ordering=content（短到长）或 -content（长到短）
     ordering = ['-created_at']                      # 默认排序
