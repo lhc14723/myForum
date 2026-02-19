@@ -8,6 +8,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from .models import Board, Post
 from .serializers import BoardSerializer, PostSerializer, UserSerializer
+from rest_framework.permissions import AllowAny 
+from django.db.models.functions import Length
 
 
 class BoardViewSet(viewsets.ModelViewSet):
@@ -27,22 +29,22 @@ class PostViewSet(viewsets.ModelViewSet):
     帖子 API
     支持：搜索、排序、分页
     """
-    queryset = Post.objects.select_related('author', 'board').all()
+    queryset = Post.objects.annotate(content_len=Length('content')).select_related('author', 'board')
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     
     # 配置过滤和搜索
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['board']                    # 精确筛选：?board=1
+    filterset_fields = ['board',]                    # 精确筛选：?board=1
     search_fields = ['title', 'content']            # 模糊搜索：?search=关键词
-    ordering_fields = ['created_at', 'views', 'content']  # 排序：?ordering=content（短到长）或 -content（长到短）
+    ordering_fields = ['created_at', 'views', 'content_len']  # 排序：?ordering=content（短到长）或 -content（长到短）
     ordering = ['-created_at']                      # 默认排序
     
     def perform_create(self, serializer):
         """创建帖子时自动设置当前用户为作者"""
         serializer.save(author=self.request.user)
     
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'],permission_classes=[AllowAny])
     def increment_views(self, request, pk=None):
         """手动增加浏览量接口：POST /api/posts/1/increment_views/"""
         post = self.get_object()
