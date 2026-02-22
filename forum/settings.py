@@ -25,13 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y!pz47i^11z2g4e$%u-*iyznilxag%=)3=9ys3w5#=4a2j^!!_'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -154,3 +153,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # 允许携带 Cookie
 CORS_ALLOW_CREDENTIALS = True
+
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = '/app/staticfiles'
+
+# Media files (用户上传)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/app/media'
