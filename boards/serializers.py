@@ -22,7 +22,7 @@ class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     board_name = serializers.CharField(source='board.name', read_only=True)
     
-    # 修改这里：用 SerializerMethodField 代替 IntegerField
+   
     content_length = serializers.SerializerMethodField()
     
     class Meta:
@@ -35,6 +35,6 @@ class PostSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['views', 'created_at', 'updated_at']
     
-    # 添加这个方法来计算长度
+  
     def get_content_length(self, obj):
         return len(obj.content)
