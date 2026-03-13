@@ -151,13 +151,13 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# 允许携带 Cookie
+
 CORS_ALLOW_CREDENTIALS = True
 
-# Static files
+
 STATIC_URL = '/static/'
 STATIC_ROOT = '/app/staticfiles'
 
-# Media files (用户上传)
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/app/media'
